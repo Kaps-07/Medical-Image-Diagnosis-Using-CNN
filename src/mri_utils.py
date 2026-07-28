@@ -1,5 +1,6 @@
+import numpy as np
 import config
-from tensorflow.keras import load_model
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input
 
@@ -25,4 +26,5 @@ class MRI:
         class_index=np.argmax(prediction)
         class_labels=["glioma","meningioma","notumor","pituitary"]
         predicted_class=class_labels[class_index]
-        return predicted_class
+        confidence = float(np.max(prediction))
+        return predicted_class,confidence
