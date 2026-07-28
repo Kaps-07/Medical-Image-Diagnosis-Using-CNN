@@ -1,5 +1,6 @@
 import numpy as np
 import config
+from io import BytesIO
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.efficientnet import preprocess_input
@@ -13,7 +14,7 @@ class SKIN:
         return
 
     def image_processing(self,image_file):
-        img=image.load_img(image_file,target_size=(config.image_height,config.image_width))
+        img=image.load_img(BytesIO(image_file.read()),target_size=(config.image_height,config.image_width))
         image_array=image.img_to_array(img)
         image_array=preprocess_input(image_array)
         image_array=np.expand_dims(image_array,axis=0)
