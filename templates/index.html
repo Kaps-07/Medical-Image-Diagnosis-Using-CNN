@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical AI - Home</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ───────────── NAVBAR ───────────── -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <i class="fa-solid fa-heart-pulse nav-logo-icon"></i>
+      <span class="brand-text">Medical <span class="brand-accent">AI</span></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li class="dropdown">
+        <a href="#" class="nav-link"><i class="fa-solid fa-stethoscope"></i> Predictions <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="dropdown-menu">
+          <a href="/predict/xray"><i class="fa-solid fa-lungs"></i> Chest X-Ray</a>
+          <a href="/predict/mri"><i class="fa-solid fa-brain"></i> Brain MRI</a>
+          <a href="/predict/skin"><i class="fa-solid fa-hand-dots"></i> Skin Disease</a>
+        </div>
+      </li>
+      <li><a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+    </ul>
+    <a href="/login" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+  </nav>
+
+  <!-- ───────────── HERO SECTION ───────────── -->
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <span class="hero-badge"><i class="fa-solid fa-microchip"></i> AI Powered &bull; Accurate &bull; Instant</span>
+      <h1 class="hero-title">
+        AI Powered<br/>
+        <span class="gradient-text">Medical Diagnosis</span><br/>
+        System
+      </h1>
+      <p class="hero-desc">
+        Upload medical images and receive instant AI-driven predictions
+        for chest diseases, brain tumours, and skin conditions.
+      </p>
+      <a href="#diagnosis" class="btn-primary"><i class="fa-solid fa-play"></i> Start Diagnosis</a>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">3</span>
+          <span class="stat-label">AI Models</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">3+</span>
+          <span class="stat-label">Disease Types</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number fast">Fast</span>
+          <span class="stat-label">Predictions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Decorative blobs -->
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <!-- Floating badge top-left -->
+      <div class="float-badge float-tl"><i class="fa-solid fa-circle-check"></i></div>
+      <!-- Floating badge bottom-right -->
+      <div class="float-badge float-br"><i class="fa-solid fa-circle-dot"></i></div>
+      <!-- Floating badge left -->
+      <div class="float-badge float-l badge-pink"><i class="fa-solid fa-star"></i></div>
+      <!-- Floating badge right -->
+      <div class="float-badge float-r badge-yellow"><i class="fa-solid fa-circle"></i></div>
+
+      <!-- Doctor SVG illustration -->
+      <div class="doctor-card">
+        <svg viewBox="0 0 320 380" xmlns="http://www.w3.org/2000/svg" class="doctor-svg">
+          <!-- Background circle -->
+          <circle cx="160" cy="190" r="150" fill="#d0f0f7" opacity="0.5"/>
+
+          <!-- White coat body -->
+          <rect x="85" y="210" width="150" height="130" rx="20" fill="white" stroke="#c8e6f5" stroke-width="2"/>
+          <!-- Coat lapels -->
+          <polygon points="160,215 120,240 130,340 160,310" fill="#e8f4fb"/>
+          <polygon points="160,215 200,240 190,340 160,310" fill="#e8f4fb"/>
+          <!-- Stethoscope -->
+          <path d="M 130 245 Q 120 280 135 295 Q 155 315 170 295 Q 185 275 175 255" fill="none" stroke="#4db8cc" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="130" cy="243" r="6" fill="#4db8cc"/>
+          <circle cx="170" cy="295" r="8" fill="#2a9bb5" stroke="white" stroke-width="2"/>
+
+          <!-- Neck -->
+          <rect x="145" y="185" width="30" height="35" rx="10" fill="#f5c9a0"/>
+
+          <!-- Head -->
+          <ellipse cx="160" cy="155" rx="52" ry="58" fill="#f5c9a0"/>
+
+          <!-- Hair -->
+          <ellipse cx="160" cy="105" rx="52" ry="22" fill="#3d2b1f"/>
+          <ellipse cx="112" cy="130" rx="14" ry="28" fill="#3d2b1f"/>
+          <ellipse cx="208" cy="130" rx="14" ry="28" fill="#3d2b1f"/>
+
+          <!-- Face features -->
+          <!-- Eyes -->
+          <ellipse cx="142" cy="150" rx="8" ry="9" fill="white"/>
+          <ellipse cx="178" cy="150" rx="8" ry="9" fill="white"/>
+          <circle cx="144" cy="152" r="5" fill="#2c3e50"/>
+          <circle cx="180" cy="152" r="5" fill="#2c3e50"/>
+          <circle cx="146" cy="150" r="2" fill="white"/>
+          <circle cx="182" cy="150" r="2" fill="white"/>
+          <!-- Eyebrows -->
+          <path d="M 134 140 Q 142 135 150 138" stroke="#3d2b1f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M 170 138 Q 178 135 186 140" stroke="#3d2b1f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <!-- Nose -->
+          <path d="M 158 158 Q 155 170 160 173 Q 165 170 162 158" fill="#e8ab80" stroke="none"/>
+          <!-- Smile -->
+          <path d="M 148 183 Q 160 193 172 183" stroke="#c0704a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+          <!-- Ears -->
+          <ellipse cx="108" cy="158" rx="10" ry="14" fill="#f5c9a0"/>
+          <ellipse cx="212" cy="158" rx="10" ry="14" fill="#f5c9a0"/>
+
+          <!-- Clipboard in hands -->
+          <rect x="170" y="255" width="55" height="68" rx="6" fill="white" stroke="#4db8cc" stroke-width="2"/>
+          <rect x="183" y="248" width="30" height="10" rx="4" fill="#4db8cc"/>
+          <!-- Clipboard lines -->
+          <line x1="178" y1="272" x2="217" y2="272" stroke="#c8e6f5" stroke-width="2"/>
+          <line x1="178" y1="283" x2="217" y2="283" stroke="#c8e6f5" stroke-width="2"/>
+          <line x1="178" y1="294" x2="205" y2="294" stroke="#c8e6f5" stroke-width="2"/>
+
+          <!-- Arms -->
+          <path d="M 85 230 Q 70 260 80 290 Q 90 300 100 285 Q 108 265 100 248" fill="#f5c9a0"/>
+          <path d="M 235 230 Q 250 255 245 285 Q 235 300 225 290 L 215 265 Q 215 245 225 238" fill="#f5c9a0"/>
+
+          <!-- Name badge -->
+          <rect x="92" y="265" width="62" height="35" rx="5" fill="#4db8cc" opacity="0.15" stroke="#4db8cc" stroke-width="1.5"/>
+          <text x="123" y="280" text-anchor="middle" font-size="8" fill="#2a9bb5" font-weight="bold">Dr. AI</text>
+          <text x="123" y="292" text-anchor="middle" font-size="6.5" fill="#4db8cc">Specialist</text>
+
+          <!-- Medical cross on coat -->
+          <rect x="155" y="222" width="10" height="18" rx="2" fill="#e74c3c" opacity="0.7"/>
+          <rect x="150" y="228" width="20" height="7" rx="2" fill="#e74c3c" opacity="0.7"/>
+        </svg>
+
+        <!-- Floating AI result card -->
+        <div class="result-card">
+          <div class="result-dot"></div>
+          <div>
+            <div class="result-title">AI Analysis</div>
+            <div class="result-sub">98.7% confidence</div>
+          </div>
+          <i class="fa-solid fa-brain result-icon"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── DIAGNOSIS SECTION ───────────── -->
+  <section class="diagnosis-section" id="diagnosis">
+    <div class="section-badge"><i class="fa-solid fa-star"></i> Our Capabilities</div>
+    <h2 class="section-title">Choose Your Diagnosis</h2>
+    <p class="section-sub">Select a module below to upload your medical image and receive an AI prediction instantly.</p>
+
+    <div class="cards-grid">
+
+      <!-- X-Ray Card -->
+      <div class="diag-card xray-card">
+        <div class="card-top xray-top"></div>
+        <div class="card-icon-wrap xray-icon">
+          <i class="fa-solid fa-lungs"></i>
+        </div>
+        <h3>Chest X-Ray Prediction</h3>
+        <p>Detect pneumonia and other chest diseases using our trained EfficientNet deep learning model.</p>
+        <a href="/predict/xray" class="btn-card btn-xray"><i class="fa-solid fa-arrow-right"></i> Predict Now</a>
+      </div>
+
+      <!-- MRI Card -->
+      <div class="diag-card mri-card">
+        <div class="card-top mri-top"></div>
+        <div class="card-icon-wrap mri-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h3>Brain MRI Prediction</h3>
+        <p>Analyze MRI scans for neurological abnormalities and detect the presence of brain tumours.</p>
+        <a href="/predict/mri" class="btn-card btn-mri"><i class="fa-solid fa-arrow-right"></i> Predict Now</a>
+      </div>
+
+      <!-- Skin Card -->
+      <div class="diag-card skin-card">
+        <div class="card-top skin-top"></div>
+        <div class="card-icon-wrap skin-icon">
+          <i class="fa-solid fa-hand-dots"></i>
+        </div>
+        <h3>Skin Disease Prediction</h3>
+        <p>Identify benign or malignant skin conditions from images using AI-powered classification.</p>
+        <a href="/predict/skin" class="btn-card btn-skin"><i class="fa-solid fa-arrow-right"></i> Predict Now</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───────────── ABOUT SECTION ───────────── -->
+  <section class="about-section" id="about">
+    <div class="section-badge about-badge"><i class="fa-solid fa-circle-info"></i> About This Project</div>
+    <h2 class="section-title">Built for Medical AI Research</h2>
+    <p class="section-sub">
+      This system is designed to assist medical professionals with fast, accurate, and AI-driven image-based
+      diagnostics — combining deep learning with clinical usability.
+    </p>
+    <div class="about-grid">
+      <div class="about-card">
+        <i class="fa-solid fa-shield-halved about-icon"></i>
+        <h4>Secure & Private</h4>
+        <p>All patient data is stored securely with JWT-protected access for verified doctors only.</p>
+      </div>
+      <div class="about-card">
+        <i class="fa-solid fa-bolt about-icon"></i>
+        <h4>Fast Inference</h4>
+        <p>Deep learning models deliver predictions in milliseconds, supporting clinical workflows.</p>
+      </div>
+      <div class="about-card">
+        <i class="fa-solid fa-microscope about-icon"></i>
+        <h4>Research Grade</h4>
+        <p>Built on state-of-the-art CNN architectures trained on curated medical datasets.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── FOOTER ───────────── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <i class="fa-solid fa-heart-pulse"></i>
+        <span>Medical <strong>AI</strong></span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Medical AI. Built for AI-powered healthcare.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

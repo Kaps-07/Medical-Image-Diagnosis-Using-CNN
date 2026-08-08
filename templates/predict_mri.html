@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical AI - Brain MRI Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="predict-body">
+
+  <!-- ───────────── NAVBAR ───────────── -->
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="nav-brand">
+      <i class="fa-solid fa-heart-pulse nav-logo-icon"></i>
+      <span class="brand-text">Medical <span class="brand-accent">AI</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('home') }}" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li class="dropdown">
+        <a href="#" class="nav-link active"><i class="fa-solid fa-stethoscope"></i> Predictions <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="dropdown-menu">
+          <a href="{{ url_for('predict_xray_page') }}"><i class="fa-solid fa-lungs"></i> Chest X-Ray</a>
+          <a href="{{ url_for('predict_mri_page') }}" class="active-link"><i class="fa-solid fa-brain"></i> Brain MRI</a>
+          <a href="{{ url_for('predict_skin_page') }}"><i class="fa-solid fa-hand-dots"></i> Skin Disease</a>
+        </div>
+      </li>
+      <li><a href="{{ url_for('home') }}#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+    </ul>
+    <a href="{{ url_for('login_page') }}" class="btn-login" id="navLoginBtn">
+      <i class="fa-solid fa-right-to-bracket"></i> <span id="navLoginText">Login</span>
+    </a>
+  </nav>
+
+  <!-- ───────────── PAGE HEADER ───────────── -->
+  <div class="predict-header mri-header">
+    <div class="predict-header-inner">
+      <div class="predict-header-icon mri-hicon"><i class="fa-solid fa-brain"></i></div>
+      <div>
+        <h1>Brain <span>MRI</span> Prediction</h1>
+        <p>Upload a brain MRI scan to detect the presence of a tumour using a trained CNN model.</p>
+      </div>
+      <div class="predict-header-badges">
+        <span class="hbadge hbadge-purple"><i class="fa-solid fa-microchip"></i> EfficientNet</span>
+        <span class="hbadge hbadge-purple"><i class="fa-solid fa-brain"></i> Tumour Detection</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────── MAIN CONTENT ───────────── -->
+  <div class="predict-layout">
+
+    <!-- LEFT -->
+    <div class="predict-left">
+
+      <!-- Patient Info -->
+      <div class="predict-card patient-card">
+        <div class="card-section-title"><i class="fa-solid fa-user"></i> Patient Information</div>
+        <div class="patient-form-grid">
+          <div class="form-group">
+            <label>Patient Name</label>
+            <input type="text" id="patient_name" placeholder="Enter patient name" />
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="age" placeholder="Age" min="1" max="120" />
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select id="gender">
+              <option value="" disabled selected>Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Zone -->
+      <div class="predict-card">
+        <div class="card-section-title"><i class="fa-solid fa-cloud-arrow-up"></i> Upload MRI Scan</div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('imageInput').click()">
+          <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleFileSelect(this)" />
+          <div class="upload-placeholder" id="uploadPlaceholder">
+            <div class="upload-icon mri-upload-icon"><i class="fa-solid fa-brain"></i></div>
+            <p class="upload-title">Drag &amp; Drop your MRI scan here</p>
+            <p class="upload-sub">or click to browse files</p>
+            <button type="button" class="btn-browse mri-browse"><i class="fa-solid fa-folder-open"></i> Browse Files</button>
+            <p class="upload-hint">Supported: JPG, PNG, JPEG &nbsp;|&nbsp; Max 10MB</p>
+          </div>
+          <div class="upload-preview" id="uploadPreview" style="display:none">
+            <img id="previewImg" src="" alt="Preview" />
+            <button type="button" class="btn-remove-img" onclick="removeImage(event)"><i class="fa-solid fa-xmark"></i> Remove</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analyze Button -->
+      <button class="btn-analyze mri-analyze" id="analyzeBtn" onclick="runPrediction()">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <span id="analyzeBtnText">Analyze MRI Scan</span>
+        <div class="btn-spinner" id="analyzeSpinner" style="display:none;"></div>
+      </button>
+
+      <!-- Tips -->
+      <div class="tips-card mri-tips">
+        <div class="tips-title"><i class="fa-solid fa-lightbulb"></i> Tips for best results</div>
+        <ul>
+          <li>Use axial or coronal MRI slice images</li>
+          <li>Ensure the image has good contrast</li>
+          <li>T1 or T2 weighted MRI images work best</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT: Result Panel -->
+    <div class="predict-right">
+      <div class="predict-card result-panel" id="resultPanel">
+        <div class="card-section-title"><i class="fa-solid fa-chart-bar"></i> Prediction Result</div>
+
+        <div class="result-empty" id="resultEmpty">
+          <div class="result-empty-icon mri-empty-icon"><i class="fa-solid fa-brain"></i></div>
+          <p>Upload a brain MRI scan and click <strong>Analyze</strong> to see the prediction result.</p>
+        </div>
+
+        <div class="result-content" id="resultContent" style="display:none">
+          <div class="result-image-wrap">
+            <img id="resultImg" src="" alt="MRI Scan" />
+          </div>
+          <div class="result-detected-label">Detected Condition</div>
+          <div class="result-condition" id="resultCondition">
+            <i class="fa-solid fa-circle-check" id="resultIcon"></i>
+            <span id="resultText"></span>
+          </div>
+          <div class="result-confidence-label">
+            <i class="fa-solid fa-circle-info"></i> Confidence Score
+            <span id="confidenceVal"></span>
+          </div>
+          <div class="confidence-bar-wrap">
+            <div class="confidence-bar">
+              <div class="confidence-fill mri-fill" id="confidenceFill"></div>
+            </div>
+          </div>
+          <div class="result-recommendation" id="resultRec">
+            <i class="fa-solid fa-user-doctor"></i>
+            <div>
+              <strong>Recommendation:</strong>
+              <span id="recText"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const token  = localStorage.getItem('medical_ai_token');
+    const doctor = localStorage.getItem('medical_ai_doctor');
+    if (token && doctor) {
+      document.getElementById('navLoginText').textContent = doctor;
+      document.getElementById('navLoginBtn').href = '#';
+    }
+
+    const zone = document.getElementById('uploadZone');
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) showPreview(file);
+    });
+
+    function handleFileSelect(input) {
+      if (input.files[0]) showPreview(input.files[0]);
+    }
+
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('previewImg').src = e.target.result;
+        document.getElementById('uploadPlaceholder').style.display = 'none';
+        document.getElementById('uploadPreview').style.display   = 'flex';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeImage(e) {
+      e.stopPropagation();
+      document.getElementById('imageInput').value = '';
+      document.getElementById('uploadPlaceholder').style.display = 'flex';
+      document.getElementById('uploadPreview').style.display   = 'none';
+      document.getElementById('resultContent').style.display   = 'none';
+      document.getElementById('resultEmpty').style.display     = 'flex';
+    }
+
+    async function runPrediction() {
+      const file         = document.getElementById('imageInput').files[0];
+      const patient_name = document.getElementById('patient_name').value.trim();
+      const age          = document.getElementById('age').value.trim();
+      const gender       = document.getElementById('gender').value;
+
+      if (!file)         { showToast('Please upload an MRI image.', 'warn'); return; }
+      if (!patient_name) { showToast('Please enter the patient name.', 'warn'); return; }
+      if (!age)          { showToast('Please enter the patient age.', 'warn'); return; }
+      if (!gender)       { showToast('Please select the patient gender.', 'warn'); return; }
+      if (!token)        { showToast('Please login to run predictions.', 'warn'); return; }
+
+      const btn     = document.getElementById('analyzeBtn');
+      const spinner = document.getElementById('analyzeSpinner');
+      const btnText = document.getElementById('analyzeBtnText');
+      btn.disabled  = true;
+      btnText.textContent = 'Analyzing...';
+      spinner.style.display = 'inline-block';
+
+      const formData = new FormData();
+      formData.append('image_file', file);
+      formData.append('patient_name', patient_name);
+      formData.append('age', age);
+      formData.append('gender', gender);
+
+      try {
+        const res  = await fetch('/predict_mri', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.status === 401) { showToast('Session expired. Please login again.', 'warn'); return; }
+        showResult(data.prediction, data.confidence);
+      } catch (err) {
+        showToast('Server error. Please try again.', 'error');
+      } finally {
+        btn.disabled = false;
+        btnText.textContent = 'Analyze MRI Scan';
+        spinner.style.display = 'none';
+      }
+    }
+
+    function showResult(prediction, confidence) {
+      const noTumour = ['no', 'normal', 'no tumour', 'no tumor'].includes(prediction.toLowerCase());
+      const confPct  = (parseFloat(confidence) * 100).toFixed(2);
+
+      document.getElementById('resultImg').src = document.getElementById('previewImg').src;
+      document.getElementById('resultText').textContent = prediction;
+      document.getElementById('confidenceVal').textContent = confPct + '%';
+      document.getElementById('confidenceFill').style.width = confPct + '%';
+
+      const icon = document.getElementById('resultIcon');
+      const cond = document.getElementById('resultCondition');
+      icon.className = noTumour ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-exclamation';
+      cond.className = 'result-condition ' + (noTumour ? 'cond-normal' : 'cond-abnormal');
+
+      document.getElementById('recText').textContent = noTumour
+        ? 'No tumour detected in the MRI scan. Continue regular neurological check-ups as advised by your doctor.'
+        : 'Tumour detected in the MRI scan. Immediate consultation with a neurologist or oncologist is strongly recommended.';
+
+      document.getElementById('resultEmpty').style.display   = 'none';
+      document.getElementById('resultContent').style.display = 'block';
+    }
+
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.className = `pred-toast toast-${type}`;
+      t.innerHTML = `<i class="fa-solid fa-${type === 'warn' ? 'triangle-exclamation' : 'circle-xmark'}"></i> ${msg}`;
+      document.body.appendChild(t);
+      setTimeout(() => t.classList.add('show'), 10);
+      setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 3000);
+    }
+  </script>
+</body>
+</html>

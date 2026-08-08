@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Medical AI - Register</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body class="auth-body">
+
+  <!-- ───────────── NAVBAR ───────────── -->
+  <nav class="navbar">
+    <a href="{{ url_for('home') }}" class="nav-brand">
+      <i class="fa-solid fa-heart-pulse nav-logo-icon"></i>
+      <span class="brand-text">Medical <span class="brand-accent">AI</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="{{ url_for('home') }}" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="{{ url_for('home') }}#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
+    </ul>
+    <a href="{{ url_for('login_page') }}" class="btn-login">
+      <i class="fa-solid fa-right-to-bracket"></i> Login
+    </a>
+  </nav>
+
+  <!-- ───────────── AUTH LAYOUT ───────────── -->
+  <div class="auth-wrapper">
+
+    <!-- Left panel -->
+    <div class="auth-left">
+      <div class="auth-left-content">
+        <div class="auth-brand-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h2>Join<br/><span>Medical AI</span></h2>
+        <p>Register as a verified doctor to access AI-powered diagnosis tools for your patients.</p>
+
+        <div class="auth-features">
+          <div class="auth-feature-item">
+            <div class="auth-feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div>
+              <strong>Secure Platform</strong>
+              <span>JWT-protected doctor access</span>
+            </div>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feat-icon"><i class="fa-solid fa-database"></i></div>
+            <div>
+              <strong>Patient Records</strong>
+              <span>Store and review predictions</span>
+            </div>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feat-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+              <strong>Instant Diagnosis</strong>
+              <span>Results in milliseconds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel — form -->
+    <div class="auth-right">
+      <div class="auth-card">
+
+        <div class="auth-card-header">
+          <div class="auth-card-icon register-icon"><i class="fa-solid fa-user-plus"></i></div>
+          <h3>Create Account</h3>
+          <p>Register as a verified medical professional</p>
+        </div>
+
+        <!-- Alert box -->
+        <div class="auth-alert" id="authAlert" style="display:none;"></div>
+
+        <form class="auth-form" id="registerForm">
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="dr_name"><i class="fa-solid fa-user-doctor"></i> Doctor Name</label>
+              <input type="text" id="dr_name" name="dr_name" placeholder="Full name" required />
+            </div>
+            <div class="form-group">
+              <label for="dr_email"><i class="fa-solid fa-envelope"></i> Email</label>
+              <input type="email" id="dr_email" name="dr_email" placeholder="doctor@hospital.com" required />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="med_reg_no"><i class="fa-solid fa-id-card"></i> Medical Reg. No.</label>
+              <input type="text" id="med_reg_no" name="med_reg_no" placeholder="e.g. MCI-12345" required />
+            </div>
+            <div class="form-group">
+              <label for="specialization"><i class="fa-solid fa-stethoscope"></i> Specialization</label>
+              <select id="specialization" name="specialization" required>
+                <option value="" disabled selected>Select specialization</option>
+                <option value="Radiologist">Radiologist</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="General Physician">General Physician</option>
+                <option value="Oncologist">Oncologist</option>
+                <option value="Pulmonologist">Pulmonologist</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+              <div class="input-wrap">
+                <input type="password" id="password" name="password" placeholder="Create password" required />
+                <button type="button" class="toggle-pw" onclick="togglePassword('password', this)">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="confirm_password"><i class="fa-solid fa-lock"></i> Confirm Password</label>
+              <div class="input-wrap">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Repeat password" required />
+                <button type="button" class="toggle-pw" onclick="togglePassword('confirm_password', this)">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Password strength bar -->
+          <div class="pw-strength-wrap" id="pwStrengthWrap" style="display:none;">
+            <div class="pw-strength-bar">
+              <div class="pw-strength-fill" id="pwStrengthFill"></div>
+            </div>
+            <span class="pw-strength-label" id="pwStrengthLabel"></span>
+          </div>
+
+          <button type="submit" class="btn-auth register-btn" id="registerBtn">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>Create Account</span>
+            <div class="btn-spinner" id="registerSpinner" style="display:none;"></div>
+          </button>
+        </form>
+
+        <div class="auth-divider"><span>Already have an account?</span></div>
+        <a href="{{ url_for('login_page') }}" class="btn-auth-outline">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword(fieldId, btn) {
+      const field = document.getElementById(fieldId);
+      const icon  = btn.querySelector('i');
+      if (field.type === 'password') {
+        field.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        field.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+
+    // Password strength meter
+    document.getElementById('password').addEventListener('input', function() {
+      const val  = this.value;
+      const wrap = document.getElementById('pwStrengthWrap');
+      const fill = document.getElementById('pwStrengthFill');
+      const lbl  = document.getElementById('pwStrengthLabel');
+
+      if (!val) { wrap.style.display = 'none'; return; }
+      wrap.style.display = 'flex';
+
+      let score = 0;
+      if (val.length >= 8)            score++;
+      if (/[A-Z]/.test(val))          score++;
+      if (/[0-9]/.test(val))          score++;
+      if (/[^A-Za-z0-9]/.test(val))   score++;
+
+      const levels = [
+        { label: 'Weak',    color: '#e74c3c', width: '25%' },
+        { label: 'Fair',    color: '#f39c12', width: '50%' },
+        { label: 'Good',    color: '#2a9bb5', width: '75%' },
+        { label: 'Strong',  color: '#1db954', width: '100%' },
+      ];
+      const lvl = levels[score - 1] || levels[0];
+      fill.style.width      = lvl.width;
+      fill.style.background = lvl.color;
+      lbl.textContent       = lvl.label;
+      lbl.style.color       = lvl.color;
+    });
+
+    function showAlert(message, type) {
+      const box = document.getElementById('authAlert');
+      box.className = `auth-alert alert-${type}`;
+      box.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'circle-check' : type === 'warning' ? 'triangle-exclamation' : 'circle-xmark'}"></i> ${message}`;
+      box.style.display = 'flex';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn      = document.getElementById('registerBtn');
+      const spinner  = document.getElementById('registerSpinner');
+      const password = document.getElementById('password').value;
+      const confirm  = document.getElementById('confirm_password').value;
+
+      document.getElementById('authAlert').style.display = 'none';
+
+      if (password !== confirm) {
+        showAlert('Passwords do not match.', 'error');
+        return;
+      }
+      if (password.length < 6) {
+        showAlert('Password must be at least 6 characters.', 'warning');
+        return;
+      }
+
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+
+      const formData = new FormData(this);
+      try {
+        const res  = await fetch('/register', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.status === 'success') {
+          showAlert('Account created successfully! Redirecting to login...', 'success');
+          setTimeout(() => { window.location.href = '/login'; }, 1500);
+        } else if (data.status === 'exists') {
+          showAlert('This Medical Registration No. is already registered.', 'warning');
+        } else {
+          showAlert('Registration failed. Please try again.', 'error');
+        }
+      } catch (err) {
+        showAlert('Server error. Please try again later.', 'error');
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
