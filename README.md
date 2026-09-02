@@ -267,4 +267,4 @@ JSON response → frontend renders result panel
 
 ## License
 
-This project is intended for educational and research purposes in the field of medical AI.
+This project is intended for educational and research purposes in the field of medical 038098
