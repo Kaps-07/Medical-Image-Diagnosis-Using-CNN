@@ -158,12 +158,28 @@
 
   <script>
     // ── Auth check ──
-    const token  = localStorage.getItem('medical_ai_token');
-    const doctor = localStorage.getItem('medical_ai_doctor');
-    if (token && doctor) {
-      document.getElementById('navLoginText').textContent = doctor;
-      document.getElementById('navLoginBtn').href = '#';
-    }
+    
+const token = localStorage.getItem('medical_ai_token');
+const doctor = localStorage.getItem('medical_ai_doctor');
+
+const navLoginBtn = document.getElementById('navLoginBtn');
+
+if (token && doctor) {
+    navLoginBtn.innerHTML =
+        '<i class="fa-solid fa-right-from-bracket"></i> Logout';
+
+    navLoginBtn.href = '#';
+
+    navLoginBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        localStorage.removeItem('medical_ai_token');
+        localStorage.removeItem('medical_ai_doctor');
+
+        window.location.href = '/login';
+    });
+}
+
 
     // ── Drag & Drop ──
     const zone = document.getElementById('uploadZone');
