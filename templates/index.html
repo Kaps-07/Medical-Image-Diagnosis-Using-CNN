@@ -27,7 +27,9 @@
       </li>
       <li><a href="#about" class="nav-link"><i class="fa-solid fa-circle-info"></i> About</a></li>
     </ul>
-    <a href="/login" class="btn-login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    <a href="/login" class="btn-login" id="authNavBtn">
+  <i class="fa-solid fa-right-to-bracket"></i> Login
+</a>
   </nav>
 
   <!-- ───────────── HERO SECTION ───────────── -->
@@ -239,5 +241,22 @@
   </footer>
 
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script>
+  const authNavBtn = document.getElementById('authNavBtn');
+
+  if (localStorage.getItem('medical_ai_token')) {
+    authNavBtn.innerHTML =
+      '<i class="fa-solid fa-right-from-bracket"></i> Logout';
+
+    authNavBtn.href = '#';
+
+    authNavBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      localStorage.removeItem('medical_ai_token');
+      localStorage.removeItem('medical_ai_doctor');
+      window.location.href = '/login';
+    });
+  }
+</script>
 </body>
 </html>
