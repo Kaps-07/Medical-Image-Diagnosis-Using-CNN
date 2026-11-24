@@ -3,7 +3,7 @@ import os
 FLASK_HOST = "0.0.0.0"
 FLASK_PORT = 8000
 
-MONGO_URL = os.getenv("MONGO_URL", "mongodb+srv://Kaps:pkp%2428feb@docdb-cluster-20260701-0629.global.mongocluster.cosmos.azure.com/?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000")
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
 db_name = "Medical_Diagnosis"
 
 doctor_collection_name = 'doctors_data_collection'
